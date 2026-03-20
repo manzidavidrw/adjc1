@@ -1,5 +1,5 @@
 <template>
-  <section id="home" class="relative min-h-screen bg-navy-dark flex flex-col justify-end overflow-hidden pt-[108px]">
+  <section id="home" class="relative min-h-screen bg-navy-dark flex flex-col justify-end overflow-hidden pt-[104px]">
 
     <!-- Background layers -->
     <div class="absolute inset-0 bg-hero-mesh"></div>
@@ -99,7 +99,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useTranslations } from '../composables/useTranslations.js'
+import { useTranslations } from '@/composables/useTranslations.js'
 
 const { t } = useTranslations()
 
