@@ -42,8 +42,8 @@ import GallerySection from '../src/components/GallerySection.vue'
 import DonateSection from '../src/components/DonateSection.vue'
 import ContactSection from '../src/components/ContactSection.vue'
 import TheFooter from '../src/components/TheFooter.vue'
-import WhoWeArePage from '../src/components/WhoWeArePage.vue'
-import WhatWeDoPage from '../src/components/WhatWeDoPage.vue'
+import WhoWeArePage from '../src/components/whowearepage.vue'
+import WhatWeDoPage from '../src/components/whatwedopage.vue'
 
 const mobOpen = ref(false)
 const currentPage = ref('home')
