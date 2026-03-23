@@ -45,7 +45,7 @@ import ContactSection from '../src/components/ContactSection.vue'
 import TheFooter from '../src/components/TheFooter.vue'
 import WhoWeArePage from '../src/components/whowearepage.vue'
 import WhatWeDoPage from '../src/components/whatwedopage.vue'
-import SubProgramPage from '../src/pages/SubProgramPage.vue'
+import SubProgramPage from '../src/pages/Subprogrampage.vue'
 
 // ── State ─────────────────────────────────────────────────────────────────────
 const mobOpen = ref(false)
