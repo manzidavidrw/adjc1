@@ -5,6 +5,7 @@
   <!-- ── Sub-pages ── -->
   <WhoWeArePage v-if="currentPage === 'whoweare'" @navigate="navigateTo" />
   <WhatWeDoPage v-else-if="currentPage === 'whatwedo'" @navigate="navigateTo" />
+  <SubProgramPage v-else-if="currentPage === 'sub-program'" :slug="currentRouteParams.slug" @navigate="navigateTo" />
 
   <!-- ── Home (default) ── -->
   <template v-else>
@@ -26,10 +27,10 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted } from 'vue'
 
 import { useReveal } from '../src/composables/useReveal.js'
-import TheCursor from '../src//components/TheCursor.vue'
+import TheCursor from '../src/components/TheCursor.vue'
 import TheNavbar from '../src/components/TheNavbar.vue'
 import HeroSection from '../src/components/HeroSection.vue'
 import AboutSection from '../src/components/AboutSection.vue'
@@ -44,16 +45,31 @@ import ContactSection from '../src/components/ContactSection.vue'
 import TheFooter from '../src/components/TheFooter.vue'
 import WhoWeArePage from '../src/components/whowearepage.vue'
 import WhatWeDoPage from '../src/components/whatwedopage.vue'
+import SubProgramPage from '../src/pages/SubProgramPage.vue'
 
+// ── State ─────────────────────────────────────────────────────────────────────
 const mobOpen = ref(false)
 const currentPage = ref('home')
+const currentRouteParams = ref({})
 
 // Section anchors that live on the home page
-const HOME_ANCHORS = new Set(['home', 'about', 'programs', 'impact', 'team', 'news', 'gallery', 'donate', 'contact'])
+const HOME_ANCHORS = new Set([
+  'home', 'about', 'programs', 'impact',
+  'team', 'news', 'gallery', 'donate', 'contact',
+])
 
-function navigateTo(target) {
+// ── Navigation ────────────────────────────────────────────────────────────────
+/**
+ * Central navigation handler used by all components via @navigate.
+ *
+ * @param {string} target - Route name or home-page anchor id
+ * @param {object} params - Optional route params, e.g. { slug: 'srhr-gbv-prevention' }
+ */
+function navigateTo(target, params = {}) {
   mobOpen.value = false
+  currentRouteParams.value = params
 
+  // Named sub-pages
   if (target === 'whoweare') {
     currentPage.value = 'whoweare'
     return
@@ -62,11 +78,14 @@ function navigateTo(target) {
     currentPage.value = 'whatwedo'
     return
   }
+  if (target === 'sub-program') {
+    currentPage.value = 'sub-program'
+    return
+  }
 
-  // Anything else — go to home first, then scroll
+  // Home-page section anchors — navigate home first if needed, then scroll
   if (currentPage.value !== 'home') {
     currentPage.value = 'home'
-    // Wait for home to render, then scroll to section
     nextTick(() => {
       setTimeout(() => {
         if (HOME_ANCHORS.has(target)) {
@@ -81,10 +100,8 @@ function navigateTo(target) {
   }
 }
 
-// Re-run reveal observer whenever page changes
-watch(currentPage, () => {
-  nextTick(() => useReveal())
-})
+// ── Re-run reveal observer on every page change ───────────────────────────────
+watch(currentPage, () => nextTick(() => useReveal()))
 
-useReveal()
+onMounted(() => useReveal())
 </script>
