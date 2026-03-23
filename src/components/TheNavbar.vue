@@ -16,7 +16,7 @@
       </div>
       <!-- Right: lang toggle -->
       <div class="flex items-center gap-1">
-        <button v-for="l in ['fr', 'en']" :key="l" @click="lang = l" :class="['text-[.62rem] font-semibold tracking-[2px] uppercase px-3 py-0.5 rounded-sm transition-all duration-200 border-none cursor-pointer font-body',
+        <button v-for="l in ['fr', 'en']" :key="l" @click="setLang(l)" :class="['text-[.62rem] font-semibold tracking-[2px] uppercase px-3 py-0.5 rounded-sm transition-all duration-200 border-none cursor-pointer font-body',
           lang === l ? 'bg-red text-white' : 'bg-transparent text-white/40 hover:text-white/70']">{{ l
           }}</button>
       </div>
@@ -28,16 +28,8 @@
       <div class="max-w-[1280px] mx-auto px-8 h-[68px] flex items-center justify-between">
 
         <!-- Logo -->
-        <button @click="navigate('home')"
-          class="flex items-center gap-3 bg-transparent border-none cursor-pointer group flex-shrink-0">
-          <div
-            class="w-10 h-10 bg-red rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-red-dark transition-colors duration-200">
-            <span class="font-display font-bold text-white text-sm tracking-tight">ADJ</span>
-          </div>
-          <div class="text-left">
-            <div class="font-display font-bold text-white text-lg tracking-[2px] leading-none">ADJC</div>
-            <div class="text-[.5rem] text-white/35 tracking-[1.5px] uppercase mt-0.5 font-body">{{ t('logoSub') }}</div>
-          </div>
+        <button @click="navigate('home')" class="flex items-center gap-3">
+          <img :src="logo" alt="ADJC Logo" class="h-10 w-auto object-contain" />
         </button>
 
         <!-- Desktop mega menu links -->
@@ -157,7 +149,7 @@
           t('navDonate') }} →</button>
       <!-- Lang toggle mobile -->
       <div class="flex items-center justify-center gap-2 mt-5">
-        <button v-for="l in ['fr', 'en']" :key="l" @click="lang = l" :class="['text-xs font-semibold tracking-[2px] uppercase px-4 py-2 rounded-lg border-none cursor-pointer font-body transition-all duration-200',
+        <button v-for="l in ['fr', 'en']" :key="l" @click="setLang(l)" :class="['text-xs font-semibold tracking-[2px] uppercase px-4 py-2 rounded-lg border-none cursor-pointer font-body transition-all duration-200',
           lang === l ? 'bg-red text-white' : 'bg-white/[.06] text-white/40']">{{ l }}</button>
       </div>
     </div>
@@ -166,9 +158,13 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useTranslations } from '@/composables/useTranslations.js'
+import { useTranslations } from '../composables/useTranslations.js'
+import logo from '../assets/logo.png'
+
 
 const { lang, t } = useTranslations()
+
+function setLang(l) { lang.value = l }
 defineProps({ mob: Boolean, currentPage: String })
 const emit = defineEmits(['toggleMob', 'navigate'])
 
@@ -185,7 +181,7 @@ function onScroll() { scrolled.value = window.scrollY > 30 }
 
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
-const menus = computed(() => [
+const menus = ref([
   {
     key: 'whatwedo',
     label: 'menuWhatWeDo',

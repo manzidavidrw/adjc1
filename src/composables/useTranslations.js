@@ -414,6 +414,9 @@ const TR = {
 }
 
 export function useTranslations() {
-  const t = (key) => TR[lang.value]?.[key] ?? key
+  const t = (key) => {
+    return TR[lang.value]?.[key] ?? key
+  }
+
   return { lang, t }
 }
